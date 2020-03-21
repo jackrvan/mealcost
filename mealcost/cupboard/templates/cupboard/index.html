@@ -1,0 +1,36 @@
+{% include 'cupboard/_imports.html' %}
+{% block content %}
+    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div>
+    <h1>Cupboard
+        <button class="add-item btn btn-primary" type="button" name="button">Add new item</button>
+    </h1>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+      </div>
+    </div>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if items_in_cupboard %}
+        <ul>
+        {% for item in items_in_cupboard %}
+            <li><a href="{% url 'cupboard:detail' item.item_name %}">{{ item.item_name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
+{% endblock content %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".add-item").modalForm({formURL: "{% url 'cupboard:add_item' %}"});
+    });
+</script>
+{% endblock extrascripts %}
+
