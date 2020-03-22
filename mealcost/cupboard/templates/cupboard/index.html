@@ -1,13 +1,9 @@
-{% include 'cupboard/_imports.html' %}
+{% extends 'helpers/base.html' %}
 {% block content %}
-    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-        </div>
-      </div>
-    </div>
+  {% include "helpers/_modal.html" %}
     <h1>Cupboard
-        <button class="add-item btn btn-primary" type="button" name="button">Add new item</button>
+        <button class="add-item btn btn-primary" type="button" name="button">
+        <span class="fa fa-plus mr-2"></span>Add new item</button>
     </h1>
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
       <div class="modal-dialog" role="document">
@@ -28,7 +24,7 @@
 
 {% block extrascripts %}
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(function () {
         $(".add-item").modalForm({formURL: "{% url 'cupboard:add_item' %}"});
     });
 </script>

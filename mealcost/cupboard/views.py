@@ -17,14 +17,14 @@ class Index(generic.ListView):
     context_object_name = 'items_in_cupboard'
     template_name = 'cupboard/index.html'
 
-
+'''
 def index(request):
     items_in_cupboard = Item.objects.all()
     context = {
         'items_in_cupboard': items_in_cupboard,
     }
     return render(request, 'cupboard/index.html', context)
-
+'''
 
 def item_detail(request, item_name):
     item = get_object_or_404(Item, item_name=item_name)
