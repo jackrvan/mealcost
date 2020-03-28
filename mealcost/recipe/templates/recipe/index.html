@@ -1,1 +1,13 @@
-<h1>RECIPE INDEX</h1
+{% block content %}
+    <h1>Recipes
+        <a href="{% url 'recipe:add_recipe' %}" class="button">Add new recipe</a>
+    </h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    {% if recipes %}
+        {% for recipe in recipes %}
+            <li><a href="{% url 'recipe:detail' recipe.recipe_name %}">{{ recipe.recipe_name }}</a></li>
+        {% endfor %}
+    {% else %}
+        <p>You do not have any saved recipes.</p>
+    {% endif %}
+{% endblock content %}

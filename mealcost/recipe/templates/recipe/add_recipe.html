@@ -1,0 +1,18 @@
+<h1>Add recipe!</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'recipe:add_recipe_form' %}" method="POST">
+  {% csrf_token %}
+  <label for="recipe_name">Name: </label>
+  <input type="text" id="recipe_name" name="recipe_name"><br><br>
+  
+  <label for="ingredients">Ingredients: </label>
+  <select id="ingredients" name="ingredients" multiple>
+    {% for ingredient in ingredients %}
+      <option value="{{ ingredient.id }}">{{ ingredient.item_name }}</option>
+    {% endfor %}
+  </select>
+
+  <input type="submit" value="Submit">
+</form>

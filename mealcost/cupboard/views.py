@@ -2,14 +2,14 @@
 Django views defined for the cupboard application.
 """
 
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse, reverse_lazy
 from django.views import generic
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.views.generic import FormView
 
-from bootstrap_modal_forms.generic import BSModalCreateView
-
-from .forms import AddItemForm
 from .models import Item
+from .forms import AddItemForm
 
 
 class Index(generic.ListView):
@@ -17,22 +17,21 @@ class Index(generic.ListView):
     context_object_name = 'items_in_cupboard'
     template_name = 'cupboard/index.html'
 
-'''
-def index(request):
-    items_in_cupboard = Item.objects.all()
-    context = {
-        'items_in_cupboard': items_in_cupboard,
-    }
-    return render(request, 'cupboard/index.html', context)
-'''
+
+def add_item(request):
+    return render(request, 'cupboard/add_item.html')
+
 
 def item_detail(request, item_name):
     item = get_object_or_404(Item, item_name=item_name)
     return render(request, 'cupboard/item_detail.html', {'item': item})
 
 
-class ItemAddView(BSModalCreateView):
-    template_name = 'cupboard/add_item.html'
-    form_class = AddItemForm
-    success_message = 'Success: Added item'
-    success_url = reverse_lazy('cupboard:index')
+def add_item_form(request):
+    name = request.POST['item_name']
+    ppc = request.POST['price_per_cup']
+    ppkg = request.POST['price_per_kg']
+    ppu = request.POST['price_per_unit']
+    new_item = Item(item_name=name, price_per_cup=ppc, price_per_kg=ppkg, price_per_unit=ppu)
+    new_item.save()
+    return HttpResponseRedirect(reverse('cupboard:index'), {'items_in_cupboard': Item.objects.all()})

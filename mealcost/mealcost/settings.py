@@ -58,7 +58,7 @@ ROOT_URLCONF = 'mealcost.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'static', 'assets', 'html')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

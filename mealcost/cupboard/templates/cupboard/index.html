@@ -1,15 +1,7 @@
-{% extends 'helpers/base.html' %}
 {% block content %}
-  {% include "helpers/_modal.html" %}
     <h1>Cupboard
-        <button class="add-item btn btn-primary" type="button" name="button">
-        <span class="fa fa-plus mr-2"></span>Add new item</button>
+        <a href="{% url 'cupboard:add_item'%}" class="button">Add new item</a>
     </h1>
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content"></div>
-      </div>
-    </div>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     {% if items_in_cupboard %}
         <ul>
@@ -21,12 +13,3 @@
         <p>No items are available.</p>
     {% endif %}
 {% endblock content %}
-
-{% block extrascripts %}
-<script type="text/javascript">
-    $(function () {
-        $(".add-item").modalForm({formURL: "{% url 'cupboard:add_item' %}"});
-    });
-</script>
-{% endblock extrascripts %}
-
