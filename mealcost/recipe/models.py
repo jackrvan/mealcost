@@ -1,21 +1,16 @@
 from django.db import models
 
-# Create your models here.
 from cupboard.models import Item
-
 
 class Recipe(models.Model):
     recipe_name = models.CharField(max_length=100, unique=True)
-    # Lets explicitly state through even though we could use the django default
-    ingredients = models.ManyToManyField(
-        Item,
-        through="ItemRecipeJunction",
-        through_fields=('recipe', 'item')
-    )
 
     def __str__(self):
-        return self.recipe_name
+        return '{} object'.format(self.recipe_name)
 
 class ItemRecipeJunction(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredients")
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="is_in")
+    cups_of_item = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    kgs_of_item = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    units_of_item = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)

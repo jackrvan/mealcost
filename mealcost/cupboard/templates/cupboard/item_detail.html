@@ -10,6 +10,12 @@
         <li>${{ item.price_per_kg }}/Kg</li>
         <li>${{ item.price_per_unit }}/Unit</li>
     </ul>
+    <h2>Is ingredient in: </h2>
+    <ul>
+        {% for j in junctions %}
+            <li>{{ j.recipe.recipe_name }}</li>
+        {% endfor %}
+    </ul>
 </head>
 <body>
 

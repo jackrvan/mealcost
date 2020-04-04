@@ -7,7 +7,7 @@
     <br>
     <ul>
         {% for ingredient in ingredients %}
-            <li>${{ ingredient }}</li>
+            <li>{{ ingredient.item.item_name }}</li>
         {% endfor %}
     </ul>
 </head>

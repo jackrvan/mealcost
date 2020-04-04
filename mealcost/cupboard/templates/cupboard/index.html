@@ -6,7 +6,7 @@
     {% if items_in_cupboard %}
         <ul>
         {% for item in items_in_cupboard %}
-            <li><a href="{% url 'cupboard:detail' item.item_name %}">{{ item.item_name }}</a></li>
+            <li><a href="{% url 'cupboard:detail' item.id %}">{{ item.item_name }}</a></li>
         {% endfor %}
         </ul>
     {% else %}

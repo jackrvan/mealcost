@@ -6,13 +6,13 @@
   {% csrf_token %}
   <label for="recipe_name">Name: </label>
   <input type="text" id="recipe_name" name="recipe_name"><br><br>
-  
-  <label for="ingredients">Ingredients: </label>
-  <select id="ingredients" name="ingredients" multiple>
-    {% for ingredient in ingredients %}
-      <option value="{{ ingredient.id }}">{{ ingredient.item_name }}</option>
-    {% endfor %}
-  </select>
+
+  {% for ingredient in ingredients %}
+    <label for="{{ ingredient.item_name }}_cups">{{ ingredient.item_name }}: </label>
+    <input type="text" placeholder="Cups" id="{{ ingredient.item_name }}_cups" name="{{ ingredient.item_name }}_cups"> 
+    <input type="text" placeholder="Kgs" id="{{ ingredient.item_name }}_kgs" name="{{ ingredient.item_name }}_kgs">
+    <input type="text" placeholder="Units" id="{{ ingredient.item_name }}_units" name="{{ ingredient.item_name }}_units"><br><br>
+  {% endfor %}
 
   <input type="submit" value="Submit">
 </form>

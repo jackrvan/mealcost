@@ -5,7 +5,9 @@
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     {% if recipes %}
         {% for recipe in recipes %}
-            <li><a href="{% url 'recipe:detail' recipe.recipe_name %}">{{ recipe.recipe_name }}</a></li>
+            <li>
+                <a href="{% url 'recipe:detail' recipe.id %}">{{ recipe.recipe_name }}  </a>
+            </li>
         {% endfor %}
     {% else %}
         <p>You do not have any saved recipes.</p>
