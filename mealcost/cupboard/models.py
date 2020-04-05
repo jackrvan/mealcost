@@ -9,4 +9,4 @@ class Item(models.Model):
 
 
     def __str__(self):
-        return '{}: ${}/Cup'.format(self.item_name, self.price_per_cup)
+        return '{}: ${:0.2f}/Cup'.format(self.item_name or "NONE", self.price_per_cup or 0.00)

@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Item Detail</title>
-    {{ item.name }}
+    {{ item.item_name }}
     <br>
     <ul>
         <li>${{ item.price_per_cup }}/Cup</li>
         <li>${{ item.price_per_kg }}/Kg</li>
         <li>${{ item.price_per_unit }}/Unit</li>
     </ul>
-    <h2>Is ingredient in: </h2>
-    <ul>
-        {% for j in junctions %}
-            <li>{{ j.recipe.recipe_name }}</li>
-        {% endfor %}
-    </ul>
+    {% if junctions %}
+        <h2>Is ingredient in: </h2>
+        <ul>
+            {% for j in junctions %}
+                <li>{{ j.recipe.recipe_name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>This item is not a part of any saved recipes.</p>
+    {% endif %}
 </head>
 <body>
 

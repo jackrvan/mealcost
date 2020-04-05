@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipe Detail</title>
-    <h1>{{ recipe.name }}</h1>
+    <h1>{{ recipe.recipe_name }}</h1>
     <br>
-    <ul>
-        {% for ingredient in ingredients %}
-            <li>{{ ingredient.item.item_name }}</li>
-        {% endfor %}
-    </ul>
+    {% if ingredients %}
+        <ul>
+            {% for ingredient in ingredients %}
+                <li>{{ ingredient.item.item_name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>This recipe has no ingredients</p>
+    {% endif %}
 </head>
 <body>
 

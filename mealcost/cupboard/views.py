@@ -27,7 +27,6 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['junctions'] = [j for j in self.object.is_in.all()]
-        print('{}'.format(context['junctions']))
         return context
 
 def add_item(request):
@@ -46,7 +45,7 @@ def add_item_form(request):
     ppc = request.POST['price_per_cup']
     ppkg = request.POST['price_per_kg']
     ppu = request.POST['price_per_unit']
-    new_item = Item(item_name=name, price_per_cup=ppc, price_per_kg=ppkg, price_per_unit=ppu)
+    new_item = Item(item_name=name, price_per_cup=(ppc or None), price_per_kg=(ppkg or None), price_per_unit=(ppu or None))
     new_item.save()
     # Go back to cupboard index page
     return HttpResponseRedirect(reverse('cupboard:index'), {'items_in_cupboard': Item.objects.all()})

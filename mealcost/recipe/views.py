@@ -30,7 +30,7 @@ class DetailView(generic.DetailView):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['recipe'] = self.object
         # Get all ingredients in the current recipe
-        ingredients = (i for i in context['recipe'].ingredients.all())
+        ingredients = [i for i in context['recipe'].ingredients.all()]
         context['ingredients'] = ingredients
         return context
 
