@@ -54,9 +54,5 @@ ENV/
 env.bak/
 *venv.bak/
 
-# static files generated from Django application using `collectstatic`
-media
-static
-
 .idea/
 .vscode/
