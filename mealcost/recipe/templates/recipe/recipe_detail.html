@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 <head>
+    {% include "cupboard/header.html" %}
+</head>
+
+<body>
     <meta charset="UTF-8">
     <title>Recipe Detail</title>
     <h1>{{ recipe.recipe_name }}</h1>
     <br>
     {% if ingredients %}
         <ul>
-            {% for ingredient in ingredients %}
-                <li>{{ ingredient.item.item_name }}</li>
+            {% for ingredient, value in ingredients.items %}
+                <li>{{ ingredient.item_name }} (${{ ingredient.price_per_cup }}/{{ value.0 }}): 
+                    {{ value.0 }}s: {{ value.1 }}
+                </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>This recipe has no ingredients</p>
     {% endif %}
-</head>
-<body>
-
+    {% if price %}
+        <h5>Total price of recipe: ${{ price }}</h5>
+    {% elif price_error %}
+        {{ price_error }}
+    {% endif %}
 </body>
 </html>

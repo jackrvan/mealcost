@@ -1,20 +1,26 @@
-<h1>Add Item</h1>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
+<head>
+  {% include "cupboard/header.html" %}
+</head>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<body>
+  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'cupboard:add_item_form' %}" method="POST">
-  {% csrf_token %}
-  <label for="item_name">Name: </label>
-  <input type="text" id="item_name" name="item_name" required><br><br>
-  
-  <label for="price_per_cup">$/Cup: </label>
-  <input type="text" id="price_per_cup", name="price_per_cup"><br><br>
-  
-  <label for="price_per_kg">$/Kg: </label>
-  <input type="text" id="price_per_kg", name="price_per_kg"><br><br>
-  
-  <label for="price_per_unit">$/Unit: </label>
-  <input type="text" id="price_per_unit", name="price_per_unit"><br><br>
-  
-  <input type="submit" value="Submit">
-</form>
+  <form action="{% url 'cupboard:add_item_form' %}" method="POST">
+    {% csrf_token %}
+    <label for="item_name">Name: </label>
+    <input type="text" id="item_name" name="item_name" required><br><br>
+    
+    <label for="price_per_cup">$/Cup: </label>
+    <input type="text" id="price_per_cup", name="price_per_cup"><br><br>
+    
+    <label for="price_per_kg">$/Kg: </label>
+    <input type="text" id="price_per_kg", name="price_per_kg"><br><br>
+    
+    <label for="price_per_unit">$/Unit: </label>
+    <input type="text" id="price_per_unit", name="price_per_unit"><br><br>
+    
+    <input type="submit" value="Submit">
+  </form>
+</body>

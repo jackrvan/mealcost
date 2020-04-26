@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 <head>
+    {% include "cupboard/header.html" %}
+</head>
+<body>
     <meta charset="UTF-8">
-    <title>Item Detail</title>
+    <title>{{ item.item_name }} Detail</title>
     {{ item.item_name }}
     <br>
     <ul>
-        <li>${{ item.price_per_cup }}/Cup</li>
-        <li>${{ item.price_per_kg }}/Kg</li>
-        <li>${{ item.price_per_unit }}/Unit</li>
+        {% if item.price_per_cup %}
+            <li>${{ item.price_per_cup }}/Cup</li>
+        {% endif %}
+        {% if item.price_per_kg %}
+            <li>${{ item.price_per_kg }}/Kg</li>
+        {% endif %}
+        {% if item.price_per_unit %}
+            <li>${{ item.price_per_unit }}/Unit</li>
+        {% endif %}
     </ul>
-    {% if junctions %}
+    {% if recipes %}
         <h2>Is ingredient in: </h2>
         <ul>
-            {% for j in junctions %}
-                <li>{{ j.recipe.recipe_name }}</li>
+            {% for r in recipes %}
+                <li><a href="{% url 'recipe:detail' r.id %}" class="item_list">{{ r.recipe_name }}</a></li>
             {% endfor %}
         </ul>
     {% else %}
         <p>This item is not a part of any saved recipes.</p>
     {% endif %}
-</head>
-<body>
-
 </body>
 </html>

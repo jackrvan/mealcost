@@ -29,9 +29,30 @@ class DetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context['recipe'] = self.object
-        # Get all ingredients in the current recipe
-        ingredients = [i for i in context['recipe'].ingredients.all()]
-        context['ingredients'] = ingredients
+        recipe = self.object
+
+        ingredients = {}
+        price = 0.0
+        for i in recipe.ingredients.all():
+            # Get all ingredients in the current recipe
+            j = ItemRecipeJunction.objects.get(recipe=recipe, item=i)
+
+            if j.cups_of_item and i.price_per_cup:
+                price += (float(j.cups_of_item) * float(i.price_per_cup))
+                ingredients[i] = ('Cup', j.cups_of_item)
+            elif j.kgs_of_item and i.price_per_kg:
+                price += (float(j.kgs_of_item) * float(i.price_per_kg))
+                ingredients[i] = ('Kg', j.kgs_of_item)
+            elif j.units_of_item and i.price_per_unit:
+                price += (float(j.units_of_item) * float(i.price_per_unit))
+                ingredients[i] = ('Unit', j.units_of_item)
+            else:
+                units_specified = "{}{}{}".format("Cups," if j.cups_of_item else "", "Kgs," if j.kgs_of_item else "", "Units" if j.units_of_item else "")
+                prices_specified = "{}{}{}".format("Cups," if i.price_per_cup else "", "Kgs," if i.price_per_kg else "", "Units" if i.price_per_unit else "")
+                context['price_error'] = "Could not calculate price of recipe because youve only specified {} for item amount and only {} for price".format(units_specified, prices_specified)
+            context['ingredients'] = ingredients
+            context['price'] = '{:.2f}'.format(price)
+        
         return context
 
 

@@ -1,4 +1,9 @@
-{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
+<head>
+    {% include "cupboard/header.html" %}
+</head>
+<body>
     <h1>Recipes
         <a href="{% url 'recipe:add_recipe' %}" class="button">Add new recipe</a>
     </h1>
@@ -12,4 +17,4 @@
     {% else %}
         <p>You do not have any saved recipes.</p>
     {% endif %}
-{% endblock content %}
+</body>

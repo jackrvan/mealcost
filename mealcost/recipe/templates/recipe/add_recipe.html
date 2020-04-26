@@ -1,18 +1,24 @@
-<h1>Add recipe!</h1>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
+<head>
+    {% include "cupboard/header.html" %}
+</head>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<body>
+  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'recipe:add_recipe_form' %}" method="POST">
-  {% csrf_token %}
-  <label for="recipe_name">Name: </label>
-  <input type="text" id="recipe_name" name="recipe_name"><br><br>
+  <form action="{% url 'recipe:add_recipe_form' %}" method="POST">
+    {% csrf_token %}
+    <label for="recipe_name">Name: </label>
+    <input type="text" id="recipe_name" name="recipe_name"><br><br>
 
-  {% for ingredient in ingredients %}
-    <label for="{{ ingredient.item_name }}_cups">{{ ingredient.item_name }}: </label>
-    <input type="text" placeholder="Cups" id="{{ ingredient.item_name }}_cups" name="{{ ingredient.item_name }}_cups"> 
-    <input type="text" placeholder="Kgs" id="{{ ingredient.item_name }}_kgs" name="{{ ingredient.item_name }}_kgs">
-    <input type="text" placeholder="Units" id="{{ ingredient.item_name }}_units" name="{{ ingredient.item_name }}_units"><br><br>
-  {% endfor %}
+    {% for ingredient in ingredients %}
+      <label for="{{ ingredient.item_name }}_cups">{{ ingredient.item_name }}: </label>
+      <input type="text" placeholder="Cups" id="{{ ingredient.item_name }}_cups" name="{{ ingredient.item_name }}_cups"> 
+      <input type="text" placeholder="Kgs" id="{{ ingredient.item_name }}_kgs" name="{{ ingredient.item_name }}_kgs">
+      <input type="text" placeholder="Units" id="{{ ingredient.item_name }}_units" name="{{ ingredient.item_name }}_units"><br><br>
+    {% endfor %}
 
-  <input type="submit" value="Submit">
-</form>
+    <input type="submit" value="Submit">
+  </form>
+</body>

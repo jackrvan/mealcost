@@ -1,0 +1,9 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
+<div class="header">
+    <a class="welcome" href="{% url 'index' %}">Mealcost</a>
+    <div class="header-right">
+        <a href="{% url 'cupboard:index' %}">Cupboard</a>
+        <a href="{% url 'recipe:index' %}">Recipes</a>
+    </div>
+</div>

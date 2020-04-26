@@ -26,7 +26,7 @@ class DetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
-        context['junctions'] = [j for j in self.object.is_in.all()]
+        context['recipes'] = [r for r in self.object.is_in.all()]
         return context
 
 def add_item(request):
