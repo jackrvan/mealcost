@@ -20,7 +20,13 @@
     
     <label for="price_per_unit">$/Unit: </label>
     <input type="text" id="price_per_unit", name="price_per_unit"><br><br>
-    
+
+    <select class="categories">
+      {% for category in categories %}
+        <option value={{ category }}>{{ category }}</option>
+      {% endfor %}
+    </select>
+
     <input type="submit" value="Submit">
   </form>
 </body>

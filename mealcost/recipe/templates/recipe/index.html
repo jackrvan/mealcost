@@ -11,7 +11,10 @@
     {% if recipes %}
         {% for recipe in recipes %}
             <li>
-                <a href="{% url 'recipe:detail' recipe.id %}">{{ recipe.recipe_name }}  </a>
+                <a href="{% url 'recipe:detail' recipe.id %}">{{ recipe.recipe_name }}</a>
+                <a href="{% url 'recipe:delete_recipe' recipe.id %}" class="button">Delete</a>
+                <br>
+                <br>
             </li>
         {% endfor %}
     {% else %}

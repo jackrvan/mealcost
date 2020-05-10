@@ -30,7 +30,7 @@ class DetailView(generic.DetailView):
         return context
 
 def add_item(request):
-    return render(request, 'cupboard/add_item.html')
+    return render(request, 'cupboard/add_item.html', context={"categories": [i[1] for i in Item.CATEGORY_CHOICES]})
 
 
 def item_detail(request, item_name):

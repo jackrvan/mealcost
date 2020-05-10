@@ -58,3 +58,11 @@ a.button:hover {
     text-decoration: none;
     color: blue;
 }
+
+.recipe_image {
+  width: 500px;
+  height: 500px;
+  padding-right: 3%;
+  padding-left: 3%;
+  padding-top: 5%;
+}

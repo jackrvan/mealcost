@@ -14,9 +14,19 @@
     {% if ingredients %}
         <ul>
             {% for ingredient, value in ingredients.items %}
-                <li>{{ ingredient.item_name }} (${{ ingredient.price_per_cup }}/{{ value.0 }}): 
-                    {{ value.0 }}s: {{ value.1 }}
-                </li>
+                {% if value.0 == "Cup" %}
+                    <li>{{ ingredient.item_name }} (${{ ingredient.price_per_cup }}/{{ value.0 }}): 
+                        {{ value.0 }}s: {{ value.1 }}
+                    </li>
+                {% elif value.0 == "Kg" %}
+                    <li>{{ ingredient.item_name }} (${{ ingredient.price_per_kg }}/{{ value.0 }}): 
+                        {{ value.0 }}s: {{ value.1 }}
+                    </li>
+                {% elif value.0 == "Unit" %}
+                    <li>{{ ingredient.item_name }} (${{ ingredient.price_per_unit }}/{{ value.0 }}): 
+                        {{ value.0 }}s: {{ value.1 }}
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     {% else %}

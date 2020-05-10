@@ -2,8 +2,9 @@ from collections import defaultdict
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.views.generic import DeleteView
 
 from cupboard.models import Item
 from recipe.models import ItemRecipeJunction
@@ -18,6 +19,11 @@ class IndexView(generic.ListView):
     model = Recipe
     context_object_name = 'recipes'
     template_name = 'recipe/index.html'
+
+
+class RecipeDelete(DeleteView):
+    model = Recipe
+    success_url = reverse_lazy('recipe:index')
 
 
 class DetailView(generic.DetailView):
