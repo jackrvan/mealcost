@@ -21,10 +21,10 @@ class Item(models.Model):
     ]
 
     item_name = models.CharField(max_length=100, unique=True)
-    item_category = models.CharField(choices=CATEGORY_CHOICES, max_length=max(len(i[0]) for i in CATEGORY_CHOICES), default=OTHER)
     price_per_cup = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     price_per_kg = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     price_per_unit = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    item_category = models.CharField(choices=CATEGORY_CHOICES, max_length=max(len(i[0]) for i in CATEGORY_CHOICES), default=OTHER)
 
 
     def __str__(self):

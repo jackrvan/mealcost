@@ -4,7 +4,7 @@ Django views defined for the cupboard application.
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 
 from .models import Item
@@ -30,25 +30,7 @@ class DetailView(generic.DetailView):
         context['recipes'] = [r for r in self.object.is_in.all()]
         return context
 
-def add_item(request):
-    if request.method == "POST":
-        # We are processing our form data
-        form = AddItemForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['item_name']
-            ppc = form.cleaned_data['price_per_cup']
-            ppkg = form.cleaned_data['price_per_kg']
-            ppu = form.cleaned_data['price_per_unit']
-            new_item = Item(item_name=name, price_per_cup=(ppc or None), price_per_kg=(ppkg or None), price_per_unit=(ppu or None))
-            new_item.save()
-            # Go back to cupboard index page
-            return HttpResponseRedirect(reverse('cupboard:index'), {'items_in_cupboard': Item.objects.all()})
-    else:
-        form = AddItemForm()
-        return render(request, 'cupboard/add_item.html', context={"form": form})
-
-
-def item_detail(request, item_name):
-    item = get_object_or_404(Item, item_name=item_name)
-    return render(request, 'cupboard/item_detail.html', {'item': item})
-
+class AddItemView(generic.CreateView):
+    template_name = "cupboard/add_item.html"
+    form_class = AddItemForm
+    success_url = reverse_lazy("cupboard:index")
