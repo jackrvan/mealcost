@@ -7,6 +7,7 @@ from django.views import generic
 from django.views.generic import DeleteView
 
 from cupboard.models import Item
+from recipe.forms import AddRecipeForm
 from recipe.models import ItemRecipeJunction
 
 from .models import Recipe
@@ -61,28 +62,38 @@ class DetailView(generic.DetailView):
         
         return context
 
-
 def add_recipe(request):
-    ingredients = Item.objects.all()
-    context = {'ingredients': ingredients}
-    return render(request, 'recipe/add_recipe.html', context)
+    def save_to_database(request, name):
+        """Given a request and a recipe name add the new recipe to our database
+
+        Args:
+            request (HttpRequest): Contains our ingredient information
+            name (str): name of our new recipe
+        """
+        new_recipe = Recipe(recipe_name=name)
+        new_recipe.save()
+
+        # Create a new ItemRecipeJunction based on each ingredient we have in our recipe
+        ingredients = Item.objects.all()
+        for ingredient in ingredients:
+            name = ingredient.item_name
+            cups = request.POST[f"{name}_cups"].strip()
+            kgs = request.POST[f"{name}_kgs"].strip()
+            units = request.POST[f"{name}_units"].strip()
+            if cups or kgs or units:
+                ingredient = Item.objects.get(item_name=name)
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=ingredient, cups_of_item=(cups or None), kgs_of_item=(kgs or None), units_of_item=(units or None))
+                new_junction.save()
+        
+    if request.method == "POST":
+        # We are processing our form data
+        form = AddRecipeForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["recipe_name"]
+            save_to_database(request, name)
+            return HttpResponseRedirect(reverse('recipe:index'), {'recipe': Recipe.objects.all()})
+    else:
+        form  = AddRecipeForm()
+        return render(request, 'recipe/add_recipe.html', context={"form": form, "ingredients": Item.objects.all()})
 
 
-def add_recipe_form(request):
-    # Add new recipe
-    name = request.POST['recipe_name']
-    new_recipe = Recipe(recipe_name=name)
-    new_recipe.save()
-
-    # Create a new ItemRecipeJunction based on each ingredient we have in our recipe
-    ingredients = Item.objects.all()
-    for ingredient in ingredients:
-        name = ingredient.item_name
-        cups = request.POST[f"{name}_cups"].strip()
-        kgs = request.POST[f"{name}_kgs"].strip()
-        units = request.POST[f"{name}_units"].strip()
-        if cups or kgs or units:
-            ingredient = Item.objects.get(item_name=name)
-            new_junction = ItemRecipeJunction(recipe=new_recipe, item=ingredient, cups_of_item=(cups or None), kgs_of_item=(kgs or None), units_of_item=(units or None))
-            new_junction.save()
-    return HttpResponseRedirect(reverse('recipe:index'), {'recipe': Recipe.objects.all()})

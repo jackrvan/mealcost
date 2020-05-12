@@ -19,6 +19,6 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(Item, through=ItemRecipeJunction, related_name="is_in")
 
     def __str__(self):
-        return '{}'.format(self.recipe_name)
+        return f'{self.recipe_name}'
 
 

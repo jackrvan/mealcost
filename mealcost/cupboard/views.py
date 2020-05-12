@@ -45,7 +45,7 @@ def add_item(request):
             return HttpResponseRedirect(reverse('cupboard:index'), {'items_in_cupboard': Item.objects.all()})
     else:
         form = AddItemForm()
-        return render(request, 'cupboard/add_item.html', context={"form": form, "categories": [i[1] for i in Item.CATEGORY_CHOICES]})
+        return render(request, 'cupboard/add_item.html', context={"form": form})
 
 
 def item_detail(request, item_name):

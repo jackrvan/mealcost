@@ -7,10 +7,10 @@
 <body>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-  <form action="{% url 'recipe:add_recipe_form' %}" method="POST">
+  <form action="" method="POST">
     {% csrf_token %}
-    <label for="recipe_name">Name: </label>
-    <input type="text" id="recipe_name" name="recipe_name"><br><br>
+    {{ form }}
+    <br>
 
     {% for ingredient in ingredients %}
       <label for="{{ ingredient.item_name }}_cups">{{ ingredient.item_name }}: </label>
