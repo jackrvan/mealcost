@@ -1,5 +1,6 @@
-from django.db import models
+from taggit.managers import TaggableManager
 
+from django.db import models
 
 class Item(models.Model):
     MEAT = "MEAT"
@@ -24,8 +25,7 @@ class Item(models.Model):
     price_per_cup = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     price_per_kg = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     price_per_unit = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
-    item_category = models.CharField(choices=CATEGORY_CHOICES, max_length=max(len(i[0]) for i in CATEGORY_CHOICES), default=OTHER)
-
+    tags = TaggableManager()
 
     def __str__(self):
         return '{}: ${:0.2f}/Cup'.format(self.item_name or "NONE", self.price_per_cup or 0.00)

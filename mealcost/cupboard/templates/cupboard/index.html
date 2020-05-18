@@ -1,4 +1,6 @@
 {% load static %}
+{% load custom_template_tags %}
+
 <link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 
 <head>
@@ -10,12 +12,26 @@
         <a href="{% url 'cupboard:add_item'%}" class="button">Add new item</a>
     </h1>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    {% if items_in_cupboard %}
-        <ul>
-        {% for item in items_in_cupboard %}
-            <li><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
+    
+    {% if categories or items_with_no_tags %}
+        {% for category in categories %}
+            <h1>{{ category }}</h1>
+            {% get_category category as items_in_category %}
+            <ul>
+            {% for item in  items_in_category %}
+                <li><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
+            {% endfor %}
+            </ul>
+
         {% endfor %}
-        </ul>
+        {% if items_with_no_tags %}    
+            <h1>Other</h1>
+            <ul>
+            {% for item in items_with_no_tags %}
+                <li><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
+            {% endfor %}
+            </ul>            
+        {% endif %}
     {% else %}
         <p>You do not have any items in your cupboard.</p>
     {% endif %}

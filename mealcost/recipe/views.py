@@ -77,13 +77,18 @@ def add_recipe(request):
         ingredients = Item.objects.all()
         for ingredient in ingredients:
             name = ingredient.item_name
-            cups = request.POST[f"{name}_cups"].strip()
-            kgs = request.POST[f"{name}_kgs"].strip()
-            units = request.POST[f"{name}_units"].strip()
-            if cups or kgs or units:
-                ingredient = Item.objects.get(item_name=name)
-                new_junction = ItemRecipeJunction(recipe=new_recipe, item=ingredient, cups_of_item=(cups or None), kgs_of_item=(kgs or None), units_of_item=(units or None))
-                new_junction.save()
+            amount = request.POST[f"{name}_amount"].strip()
+            if not amount:
+                continue
+            measurement = request.POST[f"{name}_measurement"]
+            ingredient = Item.objects.get(item_name=name)
+            if measurement == "cups":
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=ingredient, cups_of_item=amount)
+            elif measurement == "kgs":
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=ingredient, kgs_of_item=amount)
+            elif measurement == "units":
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=ingredient, units_of_item=amount)
+            new_junction.save()
         
     if request.method == "POST":
         # We are processing our form data

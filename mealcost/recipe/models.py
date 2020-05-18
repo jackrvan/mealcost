@@ -2,7 +2,6 @@ from django.db import models
 
 from cupboard.models import Item
 
-
 class ItemRecipeJunction(models.Model):
     recipe = models.ForeignKey('recipe.Recipe', on_delete=models.CASCADE)
     item = models.ForeignKey('cupboard.Item', on_delete=models.CASCADE)    

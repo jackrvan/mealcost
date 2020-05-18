@@ -9,14 +9,21 @@
 
   <form action="" method="POST">
     {% csrf_token %}
+    <br>
     {{ form }}
+    <br>
     <br>
 
     {% for ingredient in ingredients %}
       <label for="{{ ingredient.item_name }}_cups">{{ ingredient.item_name }}: </label>
-      <input type="text" placeholder="Cups" id="{{ ingredient.item_name }}_cups" name="{{ ingredient.item_name }}_cups"> 
-      <input type="text" placeholder="Kgs" id="{{ ingredient.item_name }}_kgs" name="{{ ingredient.item_name }}_kgs">
-      <input type="text" placeholder="Units" id="{{ ingredient.item_name }}_units" name="{{ ingredient.item_name }}_units"><br><br>
+      <input type="text" placeholder="amount" id="{{ ingredient.item_name }}_amount" name="{{ ingredient.item_name }}_amount" pattern="[0-9]+.[0-9]+">
+      <select id="{{ ingredient.item_name }}_measurement" name="{{ ingredient.item_name }}_measurement">
+        <option value="cups">Cups</option>
+        <option value="kgs">Kgs</option>
+        <option value="units">Units</option>
+      </select>
+      <br>
+      <br>
     {% endfor %}
 
     <input type="submit" value="Submit">
