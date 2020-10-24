@@ -1,6 +1,19 @@
 {% include "cupboard/header.html" %}
 {% load static %}
 
-<img class="recipe_image" src="{% static 'images/jambalaya.jpg' alt="Jambalaya" %}" />
-<img class="recipe_image" src="{% static 'images/steak.jpg' alt="steak" %}" />
-<img class="recipe_image" src="{% static 'images/stuffed peppers.jpg' alt="stuffed peppers" %}" />
+<div class="container">
+    <div class="row d-flex justify-content-around">
+        <div class="col-6">
+            <img class="recipe_image" src="{% static 'images/jambalaya.jpg' alt="Jambalaya" %}" />
+        </div>
+        <div class="col-6">
+            <img class="recipe_image" src="{% static 'images/steak.jpg' alt="steak" %}" />
+        </div>
+        <div class="col-6">
+            <img class="recipe_image" src="{% static 'images/stuffed peppers.jpg' alt="stuffed peppers" %}" />
+        </div>
+        <div class="col-6">
+            <img class="recipe_image" src="{% static 'images/risotto.jpg' alt="stuffed peppers" %}" />
+        </div>
+    </div>
+</div>

@@ -1,31 +1,32 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 <head>
-    {% include "cupboard/header.html" %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 </head>
 
 <body>
-  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+  <div class="container">
+    {% include "cupboard/header.html" %}
 
-  <form action="" method="POST">
-    {% csrf_token %}
-    <br>
-    {{ form }}
-    <br>
-    <br>
-
-    {% for ingredient in ingredients %}
-      <label for="{{ ingredient.item_name }}_cups">{{ ingredient.item_name }}: </label>
-      <input type="text" placeholder="amount" id="{{ ingredient.item_name }}_amount" name="{{ ingredient.item_name }}_amount" pattern="[0-9]+.[0-9]+">
-      <select id="{{ ingredient.item_name }}_measurement" name="{{ ingredient.item_name }}_measurement">
-        <option value="cups">Cups</option>
-        <option value="kgs">Kgs</option>
-        <option value="units">Units</option>
-      </select>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <br>
+      {{ form }}
       <br>
       <br>
-    {% endfor %}
 
-    <input type="submit" value="Submit">
-  </form>
+      {% for ingredient in ingredients %}
+        <label for="{{ ingredient.item_name }}_cups">{{ ingredient.item_name }}: </label>
+        <input type="text" placeholder="amount" id="{{ ingredient.item_name }}_amount" name="{{ ingredient.item_name }}_amount" pattern="[0-9]+(.[0-9]+)?">
+        <select id="{{ ingredient.item_name }}_measurement" name="{{ ingredient.item_name }}_measurement">
+          <option value="cups">Cups</option>
+          <option value="kgs">Kgs</option>
+          <option value="units">Units</option>
+        </select>
+        <br>
+        <br>
+      {% endfor %}
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 </body>

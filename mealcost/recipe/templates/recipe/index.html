@@ -1,23 +1,33 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 <head>
-    {% include "cupboard/header.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 </head>
+
 <body>
-    <h1>Recipes
-        <a href="{% url 'recipe:add_recipe' %}" class="button">Add new recipe</a>
-    </h1>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    {% if recipes %}
-        {% for recipe in recipes %}
-            <li>
-                <a href="{% url 'recipe:detail' recipe.id %}">{{ recipe.recipe_name }}</a>
-                <a href="{% url 'recipe:delete_recipe' recipe.id %}" class="button">Delete</a>
-                <br>
-                <br>
-            </li>
-        {% endfor %}
-    {% else %}
-        <p>You do not have any saved recipes.</p>
-    {% endif %}
+    {% include "cupboard/header.html" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="jumbotron">
+                    <h1 class="display-4">Recipes</h1>
+                    <a class="btn btn-primary btn-lg" href="{% url 'recipe:add_recipe' %}" role="button">Add new recipe</a>
+                </div>
+            </div>
+        </div>
+    
+        {% if recipes %}
+            <ul class="list-group">
+                {% for recipe in recipes %}
+                    <li class="list-group-item">
+                        <a href="{% url 'recipe:detail' recipe.id %}">{{ recipe.recipe_name }}</a>
+                        <a href="{% url 'recipe:delete_recipe' recipe.id %}">
+                            <span class="fa fa-trash" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You do not have any saved recipes.</p>
+        {% endif %}
+    <div>
 </body>

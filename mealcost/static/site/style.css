@@ -96,15 +96,7 @@ a.add_button:hover {
 }
 
 .category-header {
-  height: 40px;
-  width: 300px;
-  background-color: #dbdbdb;
-  color: black;
-  margin-left: 25px;
-  top: 20px;
-  text-align: center;
-  position: relative;
-
+  background-color: grey;
 }
 
 .list-items {
@@ -124,4 +116,8 @@ a.add_button:hover {
 .main-header {
   line-height: 1;
   border-bottom: 1px solid #e5e5e5;
+}
+
+.list-group {
+  margin-bottom: 20px;
 }

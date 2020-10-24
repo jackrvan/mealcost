@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # Third party
     'taggit',
     'bootstrap4',
+    'crispy_forms',
     # Own
     'cupboard.apps.CupboardConfig',
     'recipe.apps.RecipeConfig',

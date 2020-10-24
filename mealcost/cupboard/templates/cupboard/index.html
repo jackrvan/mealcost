@@ -1,43 +1,41 @@
 {% load static %}
 {% load custom_template_tags %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
-
 <head>
-    {% include "cupboard/header.html" %}
+<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 </head>
 
 <body>
-    <div class="cupboard-header">
-        <h1>Cupboard</h1>
-        <a href="{% url 'cupboard:add_item'%}" class="add_button">Add new item</a>
-    </div>
-
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    
-    {% if categories or items_with_no_tags %}
-        {% for category in categories %}
-            <div class="{{ category }}">
-                <div class="category-header"> <h1>{{ category }}</h1> </div>
-                {% get_category category as items_in_category %}
-                <div class="list-items">
-                    <ul>
-                    {% for item in  items_in_category %}
-                        <li><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
-                    {% endfor %}
-                    </ul>
+    {% include "cupboard/header.html" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="jumbotron">
+                    <h1 class="display-4">Cupboard</h1>
+                    <a class="btn btn-primary btn-lg" href="{% url 'cupboard:add_item' %}" role="button">Add new item</a>
                 </div>
             </div>
-        {% endfor %}
-        {% if items_with_no_tags %}    
-            <h1>Other</h1>
-            <ul>
-            {% for item in items_with_no_tags %}
-                <li><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
+        </div>
+        {% if categories or items_with_no_tags %}
+            {% for category in categories %}
+                {% get_category category as items_in_category %}
+                <ul class="list-group">
+                <li class="list-group-item active">{{ category|title }}</li>
+                {% for item in  items_in_category %}
+                    <li class="list-group-item"><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
+                {% endfor %}
+                </ul>
             {% endfor %}
-            </ul>            
+            {% if items_with_no_tags %}    
+                <h1>Other</h1>
+                <ul>
+                {% for item in items_with_no_tags %}
+                    <li><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
+                {% endfor %}
+                </ul>            
+            {% endif %}
+        {% else %}
+            <p>You do not have any items in your cupboard.</p>
         {% endif %}
-    {% else %}
-        <p>You do not have any items in your cupboard.</p>
-    {% endif %}
+    <div>
 </body>
