@@ -1,7 +1,9 @@
 from django import forms
 from .models import Item
 
-class AddItemForm(forms.ModelForm):
+from bootstrap_modal_forms.forms import BSModalModelForm
+
+class AddItemForm(BSModalModelForm):
     class Meta:
         model = Item
         fields = '__all__'

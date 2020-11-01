@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'taggit',
     'bootstrap4',
     'crispy_forms',
+    'bootstrap_modal_forms',
     # Own
     'cupboard.apps.CupboardConfig',
     'recipe.apps.RecipeConfig',

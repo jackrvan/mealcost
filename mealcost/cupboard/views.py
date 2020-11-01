@@ -12,6 +12,7 @@ from django.views import generic
 from .forms import AddItemForm
 from .models import Item
 
+from bootstrap_modal_forms.generic import BSModalCreateView
 
 class Index(generic.ListView):
     """View defined for Cupboard index page.
@@ -36,7 +37,7 @@ class DetailView(generic.DetailView):
         context['recipes'] = [r for r in self.object.is_in.all()]
         return context
 
-class AddItemView(generic.CreateView):
+class AddItemView(BSModalCreateView):
     template_name = "cupboard/add_item.html"
     form_class = AddItemForm
     success_url = reverse_lazy("cupboard:index")

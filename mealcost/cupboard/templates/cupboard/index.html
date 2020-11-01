@@ -7,12 +7,17 @@
 
 <body>
     {% include "cupboard/header.html" %}
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="jumbotron">
                     <h1 class="display-4">Cupboard</h1>
-                    <a class="btn btn-primary btn-lg" href="{% url 'cupboard:add_item' %}" role="button">Add new item</a>
+                    <button id="create-item" class="btn btn-primary btn-lg" type="button" name='button'>Add new item</button>
                 </div>
             </div>
         </div>
@@ -39,3 +44,11 @@
         {% endif %}
     <div>
 </body>
+
+<script type="text/javascript">
+$(function() {
+    $("#create-item").modalForm({
+        formURL: "{% url 'cupboard:add_item' %}"
+    });
+});
+</script>
