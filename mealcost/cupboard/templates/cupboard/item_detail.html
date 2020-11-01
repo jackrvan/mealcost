@@ -1,35 +1,39 @@
-<!DOCTYPE html>
 <html lang="en">
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 <head>
-    {% include "cupboard/header.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
 </head>
 <body>
-    <meta charset="UTF-8">
-    <title>{{ item.item_name }} Detail</title>
-    {{ item.item_name }}
-    <br>
-    <ul>
-        {% if item.price_per_cup %}
-            <li>${{ item.price_per_cup }}/Cup</li>
-        {% endif %}
-        {% if item.price_per_kg %}
-            <li>${{ item.price_per_kg }}/Kg</li>
-        {% endif %}
-        {% if item.price_per_unit %}
-            <li>${{ item.price_per_unit }}/Unit</li>
-        {% endif %}
-    </ul>
-    {% if recipes %}
-        <h2>Is ingredient in: </h2>
-        <ul>
-            {% for r in recipes %}
-                <li><a href="{% url 'recipe:detail' r.id %}" class="item_list">{{ r.recipe_name }}</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>This item is not a part of any saved recipes.</p>
-    {% endif %}
+    {% include "cupboard/header.html" %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="jumbotron">
+                    <h1 class="display-4">{{ item.item_name }}</h1>
+                    <ul class="list-group">
+                        {% if item.price_per_cup %}
+                            <li class="list-group-item">${{ item.price_per_cup }}/Cup</li>
+                        {% endif %}
+                        {% if item.price_per_kg %}
+                            <li class="list-group-item">${{ item.price_per_kg }}/Kg</li>
+                        {% endif %}
+                        {% if item.price_per_unit %}
+                            <li class="list-group-item">${{ item.price_per_unit }}/Unit</li>
+                        {% endif %}
+                    </ul>
+                    {% if recipes %}
+                        <h2>Is ingredient in: </h2>
+                        <ul class="list-group">
+                            {% for r in recipes %}
+                                <li class="list-group-item"><a href="{% url 'recipe:detail' r.id %}" class="item_list">{{ r.recipe_name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>This item is not a part of any saved recipes.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
