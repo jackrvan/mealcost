@@ -21,24 +21,23 @@
                 </div>
             </div>
         </div>
-        {% if categories or items_with_no_tags %}
+        {% if categories %}
             {% for category in categories %}
                 {% get_category category as items_in_category %}
-                <ul class="list-group">
-                <li class="list-group-item active">{{ category|title }}</li>
-                {% for item in  items_in_category %}
-                    <li class="list-group-item"><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
-                {% endfor %}
+                <ul class="cursor-pointer list-group">
+                    <li class="expand-items list-group-item active">{{ category|title }}</li>
+                    <div class="hide=me">
+                        {% for item in  items_in_category %}
+                            <li class="list-group-item">
+                                <a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a>
+                                <a href="{% url 'cupboard:delete_item' item.id %}">
+                                    <span class="fa fa-trash" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </div>
                 </ul>
             {% endfor %}
-            {% if items_with_no_tags %}    
-                <h1>Other</h1>
-                <ul>
-                {% for item in items_with_no_tags %}
-                    <li><a href="{% url 'cupboard:detail' item.id %}" class="item_list">{{ item.item_name }}</a></li>
-                {% endfor %}
-                </ul>            
-            {% endif %}
         {% else %}
             <p>You do not have any items in your cupboard.</p>
         {% endif %}
@@ -51,4 +50,11 @@ $(function() {
         formURL: "{% url 'cupboard:add_item' %}"
     });
 });
+
+$(".expand-items").click(function () {
+
+    $content = $(this).next();
+    $content.slideToggle(500)
+});
+
 </script>

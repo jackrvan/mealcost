@@ -1,23 +1,22 @@
-from taggit.managers import TaggableManager
 
 from django.db import models
 
 class Item(models.Model):
-    MEAT = "MEAT"
-    VEGETABLE = "VEGETABLE"
-    FRUIT = "FRUIT"
     DAIRY = "DAIRY"
+    FRUIT = "FRUIT"
     GRAIN = "GRAIN"
+    MEAT = "MEAT"
     FROZEN = "FROZEN"
+    VEGETABLE = "VEGETABLE"
     OTHER = "OTHER"
 
     CATEGORY_CHOICES = [
-        (MEAT, "Meat"),
-        (VEGETABLE, "Vegetable"),
-        (FRUIT, "Fruit"),
         (DAIRY, "Dairy"),
+        (FRUIT, "Fruit"),
         (GRAIN, "Grain"),
+        (MEAT, "Meat"),
         (FROZEN, "Frozen"),
+        (VEGETABLE, "Vegetable"),
         (OTHER, "Other"),
     ]
 
@@ -25,7 +24,7 @@ class Item(models.Model):
     price_per_cup = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     price_per_kg = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     price_per_unit = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
-    tags = TaggableManager()
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default=OTHER)
 
     def __str__(self):
         return '{}: ${:0.2f}/Cup'.format(self.item_name or "NONE", self.price_per_cup or 0.00)

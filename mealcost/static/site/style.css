@@ -121,3 +121,12 @@ a.add_button:hover {
 .list-group {
   margin-bottom: 20px;
 }
+
+.hide-me {
+  display: none;
+  padding: 5px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
