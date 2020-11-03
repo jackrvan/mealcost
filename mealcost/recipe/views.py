@@ -3,8 +3,7 @@ from collections import defaultdict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views import generic
-from django.views.generic import DeleteView
+from django.views.generic import ListView, DeleteView, DetailView
 
 from cupboard.models import Item
 from recipe.forms import AddRecipeForm
@@ -14,7 +13,7 @@ from .models import Recipe
 
 
 # Create your views here.
-class IndexView(generic.ListView):
+class IndexView(ListView):
     """View defined for Recipe index page.
     """
     model = Recipe
@@ -27,7 +26,7 @@ class RecipeDelete(DeleteView):
     success_url = reverse_lazy('recipe:index')
 
 
-class DetailView(generic.DetailView):
+class DetailView(DetailView):
     """View defined for the Recipe detail page. 
     """
     model = Recipe

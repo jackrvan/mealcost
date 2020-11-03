@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third party
-    'taggit',
     'bootstrap4',
     'crispy_forms',
+    'bootstrap_modal_forms',
     # Own
     'cupboard.apps.CupboardConfig',
     'recipe.apps.RecipeConfig',
