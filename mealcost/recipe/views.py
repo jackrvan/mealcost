@@ -8,6 +8,8 @@ from django.views.generic import ListView, DeleteView, DetailView
 from cupboard.models import Item
 from recipe.forms import AddRecipeForm
 from recipe.models import ItemRecipeJunction
+from recipe.parse_recipes import parse_recipe_url
+from recipe.constants import KNOWN_UNITS
 
 from .models import Recipe
 
@@ -40,8 +42,10 @@ class DetailView(DetailView):
         ingredients = {}
         price = 0.0
         for i in recipe.ingredients.all():
+            print("i = {}".format(i))
             # Get all ingredients in the current recipe
             j = ItemRecipeJunction.objects.get(recipe=recipe, item=i)
+            print('j = {}'.format(j))
 
             if j.cups_of_item and i.price_per_cup:
                 price += (float(j.cups_of_item) * float(i.price_per_cup))
@@ -53,12 +57,13 @@ class DetailView(DetailView):
                 price += (float(j.units_of_item) * float(i.price_per_unit))
                 ingredients[i] = ('Unit', j.units_of_item)
             else:
-                units_specified = "{}{}{}".format("Cups," if j.cups_of_item else "", "Kgs," if j.kgs_of_item else "", "Units" if j.units_of_item else "")
-                prices_specified = "{}{}{}".format("Cups," if i.price_per_cup else "", "Kgs," if i.price_per_kg else "", "Units" if i.price_per_unit else "")
-                context['price_error'] = "Could not calculate price of recipe because youve only specified {} for item amount and only {} for price".format(units_specified, prices_specified)
-            context['ingredients'] = ingredients
-            context['price'] = '{:.2f}'.format(price)
-        
+                units_specified = "Cup" if j.cups_of_item else ("Kg" if j.kgs_of_item else ("Unit" if j.units_of_item else ""))
+                prices_specified = i.price_per_cup or i.price_per_kg or i.price_per_unit or 0.0
+                print("units = {}, price = {}".format(units_specified, prices_specified))
+                ingredients[i] = (units_specified, prices_specified)
+#                context['price_error'] = "Could not calculate price of recipe because youve only specified {} for item amount and only {} for price".format(units_specified, prices_specified)
+        context['ingredients'] = ingredients
+        context['price'] = '{:.2f}'.format(price)
         return context
 
 def add_recipe(request):
@@ -88,7 +93,7 @@ def add_recipe(request):
             elif measurement == "units":
                 new_junction = ItemRecipeJunction(recipe=new_recipe, item=ingredient, units_of_item=amount)
             new_junction.save()
-        
+
     if request.method == "POST":
         # We are processing our form data
         form = AddRecipeForm(request.POST)
@@ -100,4 +105,63 @@ def add_recipe(request):
         form  = AddRecipeForm()
         return render(request, 'recipe/add_recipe.html', context={"form": form, "ingredients": Item.objects.all()})
 
+def add_recipe_from_url(request):
+    def save_to_database_from_url(request, name):
+        """Given a request and a recipe name add the new recipe to our database
+
+        Args:
+            request (HttpRequest): Contains our URL
+            name (str): name of our new recipe
+        """
+        new_recipe = Recipe(recipe_name=name)
+        new_recipe.save()
+
+        ingredient_list = parse_recipe_url(request.POST['url-input'])
+        print('\n'.join(ingredient_list))
+        for ingredient in ingredient_list:
+            amount = ingredient.split()[0]
+            if not amount.isnumeric():
+                item_name = ingredient
+                amount = 1
+            else:
+                unit = ingredient.split()[1]
+                if unit in KNOWN_UNITS:
+                    item_name = ' '.join(ingredient.split()[2:])
+                else:
+                    item_name = ' '.join(ingredient.split()[1:])
+            try:
+                item = Item.objects.get(item_name=item_name)
+            except Item.DoesNotExist:
+                item = Item(item_name=item_name, price_per_cup=0, price_per_kg=0, price_per_unit=0, category=Item.OTHER)
+                item.save()
+            if unit in ('cup', 'cups'):
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=item, cups_of_item=amount)
+            elif unit in ('tbsp', 'tablespoon', 'tablespoons'):
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=item, cups_of_item=round(float(amount)/16.0, 2))
+            elif unit in ('tsp', 'teaspoon', 'teaspoons'):
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=item, cups_of_item=round(float(amount)/48.0, 2))
+            elif unit in ('kgs', 'kg'):
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=item, kgs_of_item=amount)
+            elif unit in ('g', 'gram', 'grams'):
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=item, kgs_of_item=round(float(amount)*1000, 2))
+            elif unit in ('lbs', 'pound', 'pounds'):
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=item, kgs_of_item=round(float(amount)*2.2, 2))
+            elif unit not in KNOWN_UNITS:
+                print("NOT RECOGNIZING unit {} so just treating item {} as a unit".format(unit, item))
+                new_junction = ItemRecipeJunction(recipe=new_recipe, item=item, units_of_item=amount)
+            else:
+                print("Something went wrong with ingredient {}. Got amount {}, unit {}, item {}".format(ingredient, amount, unit, item))
+                continue
+            new_junction.save()
+
+    if request.method == "POST":
+        # We are processing our form data
+        form = AddRecipeForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["recipe_name"]
+            save_to_database_from_url(request, name)
+            return HttpResponseRedirect(reverse('recipe:index'), {'recipe': Recipe.objects.all()})
+    else:
+        form  = AddRecipeForm()
+        return render(request, 'recipe/add_recipe_from_url.html', context={"form": form})
 

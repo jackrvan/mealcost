@@ -49,10 +49,13 @@ def replace_fractions(text):
         return text
     return text
 
-url = 'https://www.allrecipes.com/recipe/261544/juicy-honey-fried-chicken/'
-html_text = requests.get(url).text
-soup = BeautifulSoup(html_text, 'html.parser')
-ingredients = [replace_fractions(x.string.replace('\u2009', ' '))
-                    for x in soup.find_all(class_='ingredients-item-name')]
-for ingredient in ingredients:
-    print(f"{ingredient=}")
+def parse_recipe_url(url):
+    html_text = requests.get(url).text
+    soup = BeautifulSoup(html_text, 'html.parser')
+    ingredients = [replace_fractions(x.string.replace('\u2009', ' ').strip())
+                        for x in soup.find_all(class_='ingredients-item-name')]
+    return ingredients
+
+if __name__ == '__main__':
+    url = 'https://www.allrecipes.com/recipe/261544/juicy-honey-fried-chicken/'
+    parse_recipe_url(url)

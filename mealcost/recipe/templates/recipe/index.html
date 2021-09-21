@@ -17,6 +17,7 @@
                 <div class="jumbotron">
                     <h1 class="display-4">Recipes</h1>
                     <button id="create-recipe" class="btn btn-primary btn-lg" role="button">Add new recipe</button>
+                    <button id="create-recipe-from-url" class="btn btn-primary btn-lg" role="button">Add new recipe from URL</button>
                 </div>
             </div>
         </div>
@@ -42,6 +43,11 @@
 $(function() {
     $("#create-recipe").modalForm({
         formURL: "{% url 'recipe:add_recipe' %}"
+    });
+});
+$(function() {
+    $("#create-recipe-from-url").modalForm({
+        formURL: "{% url 'recipe:add_recipe_from_url' %}"
     });
 });
 </script>
